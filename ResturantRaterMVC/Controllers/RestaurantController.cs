@@ -9,7 +9,7 @@ namespace ResturantRaterMVC.Controllers
 {
     public class RestaurantController : Controller
     {
-        private RestaurantDbContex _db = new RestaurantDbContex();
+        private RestaurantDbContext _db = new RestaurantDbContext();
 
         // GET: Restaurant/Index
         public ActionResult Index()
@@ -17,6 +17,26 @@ namespace ResturantRaterMVC.Controllers
             return View(_db.Restaurants.ToList());
         }
 
+        // get restaurant/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Restaurant/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Restaurant restaurant)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Restaurants.Add(restaurant);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(restaurant);
+        }
 
     }
 }
